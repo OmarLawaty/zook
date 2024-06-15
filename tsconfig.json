@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": false,
+    "target": "ES5",
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types"],
+    "outDir": "dist/",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "downlevelIteration": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/"]
+}

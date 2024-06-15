@@ -2,10 +2,13 @@ import { Client } from 'discord.js';
 
 import { botConfig, isDevMode } from '../utils';
 import { commandsCreate } from '../actionHandlers';
+import { runDB } from '../db';
 
 export const onReady = <T extends boolean>(client: Client<T>) => {
   const guild = client.guilds.cache.get(botConfig.serverId);
   const commands = guild.commands;
+
+  runDB();
 
   // Command Creation
   commandsCreate(commands);

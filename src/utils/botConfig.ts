@@ -2,7 +2,7 @@ import { ActivityOptions, ActivityType } from 'discord.js';
 
 import { configDotenv } from 'dotenv';
 
-import { BotConfig } from '../types';
+import { BotConfig, MemberConfig } from '../types';
 
 configDotenv();
 
@@ -14,6 +14,10 @@ const devModeConfig: BotConfig = {
 
 const productionModeConfig: BotConfig = {
   serverId: '673700884617625621',
+};
+
+export const defaultMemberConfig: MemberConfig = {
+  points: 0,
 };
 
 export const botConfig: BotConfig = isDevMode ? devModeConfig : productionModeConfig;

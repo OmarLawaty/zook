@@ -5,6 +5,7 @@ import { configDotenv } from 'dotenv';
 import { isDevMode } from '../utils';
 
 export * from './MembersSchema';
+export * from './types';
 
 configDotenv();
 

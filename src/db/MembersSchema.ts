@@ -1,7 +1,7 @@
 import { type Document, type Types, Schema, model } from 'mongoose';
 
 import { defaultMemberConfig } from '../utils';
-import type { updateItem } from './types';
+import type { UpdateItem } from './types';
 
 export interface Member {
   userId: string;
@@ -21,20 +21,32 @@ type ReturnedMemberSchema = Document<unknown, {}, Member> & Member & { _id: Type
 export const getMemberSchema = async (userId: string): Promise<ReturnedMemberSchema> =>
   (await MemberSchema.findOne({ userId })) ?? (await new MemberSchema({ userId, ...defaultMemberConfig }).save());
 
-export const UpdatePoints = async (userId: string, action: updateItem, amount?: number) => {
+type UpdatePointsProps = {
+  userId: string;
+} & (
+  | {
+      action: UpdateItem;
+      amount: number;
+    }
+  | {
+      action: 'reset';
+    }
+);
+
+export const updatePoints = async ({ userId, ...points }: UpdatePointsProps) => {
   const user = await getMemberSchema(userId);
 
-  switch (action) {
+  switch (points.action) {
     case 'add':
-      user.set('points', user.points + amount);
+      user.set('points', user.points + points.amount);
       break;
 
     case 'remove':
-      user.set('points', user.points - amount);
+      user.set('points', user.points - points.amount);
       break;
 
     case 'set':
-      user.set('points', amount);
+      user.set('points', points.amount);
       break;
 
     case 'reset':

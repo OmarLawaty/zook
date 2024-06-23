@@ -1,15 +1,23 @@
-import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord.js';
+import { ApplicationCommandOptionType, ApplicationCommandType, PermissionsBitField } from 'discord.js';
 
+import { onLog, pointsEmbed } from '../';
+import { updatePoints, UpdateItem } from '../../db';
 import type { Command } from './types';
-import { UpdatePoints } from '../../db';
-import { updateItem } from '../../db/types';
 
-export const points: Command = ({ options, guild, member }) => {
+export const points: Command = (interaction) => {
+  const { options, guild, member, user } = interaction;
+
   const memberToUpdate = options.getUser('member');
-  const action = options.getString('action', true);
+  const action = options.getString('action', true) as UpdateItem;
   const amount = options.getInteger('amount', true);
 
-  UpdatePoints(memberToUpdate.id, action as updateItem, amount);
+  if (!(member.permissions as Readonly<PermissionsBitField>).has('Administrator'))
+    return interaction.reply({ content: 'Only administrators are allowed to update points!', ephemeral: true });
+  if (memberToUpdate.bot) return interaction.reply({ content: "Bots don't have points!", ephemeral: true });
+
+  updatePoints({ userId: memberToUpdate.id, action, amount }).then(() =>
+    interaction.reply({ embeds: [onLog(guild, { type: 'points', action, amount, memberToUpdate, user })] })
+  );
 };
 
 points.create = {

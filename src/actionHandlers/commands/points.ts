@@ -8,7 +8,7 @@ export const points: Command = (interaction) => {
   const { options, guild, member, user } = interaction;
 
   const memberToUpdate = options.getUser('member');
-  const action = options.getString('action', true) as UpdateItem;
+  const action = options.getSubcommand(true) as UpdateItem;
   const amount = options.getInteger('amount', true);
 
   if (!(member.permissions as Readonly<PermissionsBitField>).has('Administrator'))
@@ -16,38 +16,73 @@ export const points: Command = (interaction) => {
   if (memberToUpdate.bot) return interaction.reply({ content: "Bots don't have points!", ephemeral: true });
 
   updatePoints({ userId: memberToUpdate.id, action, amount }).then(() =>
-    interaction.reply({ embeds: [onLog(guild, { type: 'points', action, amount, memberToUpdate, user })] })
+    interaction.reply({
+      embeds: [onLog(guild, { type: 'points', action, amount, memberToUpdate, user })],
+      ephemeral: true,
+    })
   );
 };
 
 points.create = {
   name: 'points',
   description: 'Manage members points.',
-  type: ApplicationCommandType.ChatInput,
   options: [
     {
-      name: 'member',
-      description: 'The member to manage points',
-      type: ApplicationCommandOptionType.User,
-      required: true,
-    },
-    {
-      name: 'action',
-      description: "Points' actions to a member.",
-      type: ApplicationCommandOptionType.String,
-      required: true,
-      choices: [
-        { name: 'add', value: 'add' },
-        { name: 'remove', value: 'remove' },
-        { name: 'set', value: 'set' },
-        { name: 'reset', value: 'reset' },
+      name: 'add',
+      description: 'Add points to a member.',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'member',
+          description: 'The member to add points.',
+          type: ApplicationCommandOptionType.User,
+          required: true,
+        },
+        {
+          name: 'amount',
+          description: 'The amount of points to add.',
+          type: ApplicationCommandOptionType.Integer,
+          required: true,
+        },
       ],
     },
     {
-      name: 'amount',
-      description: 'The amount of points to add or remove.',
-      type: ApplicationCommandOptionType.Integer,
-      required: true,
+      name: 'remove',
+      description: 'Remove points from a member.',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'member',
+          description: 'The member to remove points.',
+          type: ApplicationCommandOptionType.User,
+          required: true,
+        },
+        {
+          name: 'amount',
+          description: 'The amount of points to remove.',
+          type: ApplicationCommandOptionType.Integer,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'set',
+      description: 'Set points to a member.',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'member',
+          description: 'The member to set points.',
+          type: ApplicationCommandOptionType.User,
+          required: true,
+        },
+        {
+          name: 'amount',
+          description: 'The amount of points to set.',
+          type: ApplicationCommandOptionType.Integer,
+          required: true,
+        },
+      ],
     },
   ],
 };

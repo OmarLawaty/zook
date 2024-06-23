@@ -32,7 +32,7 @@ export const pointsEmbed = (user: User, guild: Guild, memberToUpdate: User, acti
     fields: [
       { name: 'Updated Member', value: `${memberToUpdate}` },
       { name: 'Action', value: action },
-      amount && { name: 'Amount', value: String(amount) },
+      { name: 'Amount', value: String(amount) },
     ],
     color: memberToUpdate.accentColor,
     thumbnail: { url: memberToUpdate.displayAvatarURL({ extension: 'png', size: 4096 }) },

@@ -5,8 +5,12 @@ import { getCommandIdentifierIndex } from '../../utils/helpers';
 import type { Interaction, InteractionName } from './types';
 
 import { points } from './points';
+import { msgAll } from './msgAll';
 
-export const commands = [{ name: 'points', type: 'points', interaction: points }] as const;
+export const commands = [
+  { name: 'points', type: 'points', interaction: points },
+  { name: 'msg-all', type: 'msgAll', interaction: msgAll },
+] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
   const interactionName = interaction.commandName as InteractionName;

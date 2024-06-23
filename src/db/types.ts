@@ -1,1 +1,1 @@
-export type UpdateItem = 'set' | 'reset' | 'add' | 'remove';
+export type UpdateItem = 'set' | 'add' | 'remove';

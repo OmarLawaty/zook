@@ -1,9 +1,12 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionsBitField } from 'discord.js';
 import { Command } from './types';
 
 export const msgAll: Command = async (interaction) => {
-  const { guild, user, options } = interaction;
+  const { guild, member, options } = interaction;
   const message = options.getString('message');
+
+  if (!(member.permissions as Readonly<PermissionsBitField>).has('Administrator'))
+    return interaction.reply({ content: 'Only administrators are allowed to message all members!', ephemeral: true });
 
   const allGuildMembers = (await guild.members.fetch()).map((member) => member);
 

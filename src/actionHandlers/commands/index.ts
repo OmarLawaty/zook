@@ -6,10 +6,22 @@ import type { Interaction, InteractionName } from './types';
 
 import { points } from './points';
 import { msgAll } from './msgAll';
+import { clearChat } from './clearChat';
+import { avatar } from './avatar';
+import { diceRoll } from './diceRoll';
+import { user } from './user';
+import { slowMode } from './slowMode';
+import { serverInfo } from './serverInfo';
 
 export const commands = [
   { name: 'points', type: 'points', interaction: points },
   { name: 'msg-all', type: 'msgAll', interaction: msgAll },
+  { name: 'clear-chat', type: 'clearChat', interaction: clearChat },
+  { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
+  { name: 'avatar', type: 'avatar', interaction: avatar },
+  { name: 'user', type: 'user', interaction: user },
+  { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
+  { name: 'server-info', type: 'serverInfo', interaction: serverInfo },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
